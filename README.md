@@ -1,3 +1,3 @@
 # leetcode
 
-- ``--std=c++11``
+- compile in ``--std=c++11``
