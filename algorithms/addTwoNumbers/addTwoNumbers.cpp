@@ -16,14 +16,13 @@
 struct ListNode {
     int val;
     ListNode *next;
-    ListNode(int x): val(x), next(0) { }
+    ListNode(int x): val(x), next(NULL) { }
 };
 
 class Solution {
 public:
     ListNode * addTwoNumbers(ListNode* l1, ListNode* l2) {
-        ListNode *sum = new ListNode(0);
-        ListNode *tmp = sum;
+        ListNode *sum = NULL, **tmp = &sum;
         int carry = 0, val;
 
         do {
@@ -31,20 +30,18 @@ public:
             if (!l2) l2 = new ListNode(0);
 
             val = (l1->val + l2->val) + carry;
-            tmp->val = val % 10;
+            ListNode *node = new ListNode(val%10);
+            *tmp = node;
+            tmp = &(*tmp)->next;
             carry = val / 10;
 
             l1 = l1->next;
             l2 = l2->next;
-            if (l1 || l2 || carry) {
-                tmp->next = new ListNode(0);
-                tmp = tmp->next;
-            }
         }
         while (l1 || l2);
 
         if (carry)
-            tmp->val = 1;
+            *tmp = new ListNode(1);
         return sum;
     }
 
