@@ -11,34 +11,18 @@ public:
 		if (s.size() == 0) return 0;
 
 		int maxLength = 0;
-		auto index = s.begin();
+        int lastRepeatPos = -1;
+        unordered_map<char, int> m;
 
-		for (auto it = s.begin(); it != s.end(); ++it) {
-			unordered_map<char, int> m;
-			//cout << " ------------------------" << endl;
-			for (auto jit = it; jit != s.end(); ++jit) {
-				if (m.find(*jit) == m.end()) {
-					int val = m.size();
-					m.insert({(*jit), val});
-					//cout << "jit: " << *jit << " val: " << val  << endl;
-					//cout << "m size: " << m.size()  << endl;
-				}
-				else {
-					if (m.size() > maxLength)
-						maxLength = m.size();
-					//cout << " >> inside length: " << length << endl;
-					break;
-				}
-
-				if (m.size() > maxLength)
-					maxLength = m.size();
-
-			}
-		}
-
+        for (int i = 0; i < s.size(); ++i) {
+            if (m.find(s[i]) != m.end() && lastRepeatPos < m[s[i]])
+                lastRepeatPos = m[s[i]];
+            if (i - lastRepeatPos > maxLength)
+                maxLength = i - lastRepeatPos;
+            m[s[i]] = i;
+        }
 		return maxLength;
 	}
-
 };
 
 
@@ -47,20 +31,17 @@ int main() {
 	string s;
 	int length = -1;
 
-
+    s = "dvdf";
 	length = sol.lengthOfLongestSubstring(s);
 	cout << "s: "  << s << ", length: " << length << endl;
-	return 0;
-	
+
 	s = "pwwkew";
 	length = sol.lengthOfLongestSubstring(s);
 	cout << "s: "  << s << ", length: " << length << endl;
 
-
 	s = "3345678";
 	length = sol.lengthOfLongestSubstring(s);
 	cout << "s: "  << s << ", length: " << length << endl;
-
 
 	s = "au";
 	length = sol.lengthOfLongestSubstring(s);
@@ -77,7 +58,6 @@ int main() {
 	s = "";
 	length = sol.lengthOfLongestSubstring(s);
 	cout << "s: "  << s << ", length: " << length << endl;
-
 
 	return 0;
 }
